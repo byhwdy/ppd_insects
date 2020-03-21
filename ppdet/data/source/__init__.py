@@ -15,7 +15,9 @@
 from . import coco
 from . import voc
 from . import widerface
+from . import insects
 
 from .coco import *
 from .voc import *
 from .widerface import *
+from .insects import *
