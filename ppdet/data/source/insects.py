@@ -23,7 +23,7 @@ class InsectsDataSet(DataSet):
         super(InsectsDataSet, self).__init__(
             # image_dir=image_dir,
             # anno_path=anno_path,
-            dataset_dir=dataset_dir
+            # dataset_dir=dataset_dir
             # sample_num=sample_num,
             # with_background=with_background
             )
@@ -104,10 +104,10 @@ class InsectsDataSet(DataSet):
             gt_class = np.zeros((len(objs), 1), dtype=np.int32)
             gt_score = np.zeros((len(objs), 1), dtype=np.float32)
             # is_crowd = np.zeros((len(objs), ), dtype=np.int32)
-            # difficult = np.zeros((len(objs), ), dtype=np.int32)
+            difficult = np.zeros((len(objs), 1), dtype=np.int32)
             for i, obj in enumerate(objs):
                 cname = obj.find('name').text
-                gt_class[i] = cname2cid[cname]
+                gt_class[i][0] = cname2cid[cname]
                 _difficult = int(obj.find('difficult').text)
                 x1 = float(obj.find('bndbox').find('xmin').text)
                 y1 = float(obj.find('bndbox').find('ymin').text)
@@ -118,22 +118,21 @@ class InsectsDataSet(DataSet):
                 x2 = min(im_w - 1, x2)
                 y2 = min(im_h - 1, y2)
                 # 这里使用xywh格式来表示目标物体真实框
-                gt_bbox[i] = [(x1+x2)/2.0 , (y1+y2)/2.0, x2-x1+1., y2-y1+1.]
-                # is_crowd[i] = 0
-                # difficult[i] = _difficult
-                gt_score[i] = 1
-            # ['image', 'im_size', 'im_id', 'gt_bbox', 'gt_class', 'gt_score', 'is_difficult'] # YOLOv3支持的全量input字段
+                # gt_bbox[i] = [(x1+x2)/2.0 , (y1+y2)/2.0, x2-x1+1., y2-y1+1.]
+                gt_bbox[i] = [x1, y1, x2, y2]
+                gt_score[i][0] = 1.
+                # is_crowd[i][0] = 0
+                difficult[i][0] = _difficult
             voc_rec = {
                 'im_file': img_file,
                 'im_id': im_id,
                 'h': im_h,
                 'w': im_w,
-                # 'is_crowd': is_crowd,
                 'gt_class': gt_class,
                 'gt_bbox': gt_bbox,
                 'gt_score': gt_score,
-                # 'gt_poly': [],
-                # 'difficult': difficult
+                # 'is_crowd': is_crowd,
+                'difficult': difficult
                 }
             if len(objs) != 0:
                 records.append(voc_rec)

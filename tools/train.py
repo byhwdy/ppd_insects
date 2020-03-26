@@ -35,6 +35,9 @@ set_paddle_flags(
     FLAGS_eager_delete_tensor_gb=0,  # enable GC to save memory
 )
 
+import sys
+sys.path.append('/paddle/ppd_insects')
+
 from paddle import fluid
 
 from ppdet.experimental import mixed_precision_context
