@@ -128,41 +128,39 @@ def main():
 
     ### 训练循环 ###
     for it in range(start_iter, cfg.max_iters):
-        # start_time = end_time
-        # end_time = time.time()
-        # time_stat.append(end_time - start_time)
-        # time_cost = np.mean(time_stat)
-        # eta_sec = (cfg.max_iters - it) * time_cost
-        # eta = str(datetime.timedelta(seconds=int(eta_sec)))
+        start_time = end_time
+        end_time = time.time()
+        time_stat.append(end_time - start_time)
+        time_cost = np.mean(time_stat)
+        eta_sec = (cfg.max_iters - it) * time_cost
+        eta = str(datetime.timedelta(seconds=int(eta_sec)))
 
-        # # 执行
-        # outs = exe.run(train_prog, fetch_list=train_values)
-        # stats = {k: np.array(v).mean() for k, v in zip(train_keys, outs[:-1])}
+        # 执行
+        outs = exe.run(train_prog, fetch_list=train_values)
+        stats = {k: np.array(v).mean() for k, v in zip(train_keys, outs[:-1])}
 
-        # # tb
-        # if FLAGS.use_tb and it % cfg.log_iter == 0:
-        #     for loss_name, loss_value in stats.items():
-        #         tb_writer.add_scalar(loss_name, loss_value, tb_loss_step)
-        #     tb_loss_step += 1
+        # tb
+        if FLAGS.use_tb and it % cfg.log_iter == 0:
+            for loss_name, loss_value in stats.items():
+                tb_writer.add_scalar(loss_name, loss_value, tb_loss_step)
+            tb_loss_step += 1
 
-        # # log
-        # train_stats.update(stats)
-        # logs = train_stats.log()
-        # if it % cfg.log_iter == 0:
-        #     strs = 'iter: {}, lr: {:.6f}, {}, time: {:.3f}, eta: {}'.format(
-        #         it, np.mean(outs[-1]), logs, time_cost, eta)
-        #     logger.info(strs)
+        # log
+        train_stats.update(stats)
+        logs = train_stats.log()
+        if it % cfg.log_iter == 0:
+            strs = 'iter: {}, lr: {:.6f}, {}, time: {:.3f}, eta: {}'.format(
+                it, np.mean(outs[-1]), logs, time_cost, eta)
+            logger.info(strs)
 
         ## 验证
-        # if (it > 0 and it % cfg.snapshot_iter == 0 or it == cfg.max_iters - 1):
-        if True:
+        if (it > 0 and it % cfg.snapshot_iter == 0 or it == cfg.max_iters - 1):
             ## 保存模型
             save_name = str(it) if it != cfg.max_iters - 1 else "model_final"
             checkpoint.save(exe, train_prog, os.path.join(save_dir, save_name))
 
             ## 验证
             if FLAGS.eval:
-                # print(cfg['EvalReader']['dataset'].get_anno());exit(0)
                 # evaluation
                 results = eval_run(exe, eval_prog, eval_loader,
                                    eval_keys, eval_values, eval_cls)
