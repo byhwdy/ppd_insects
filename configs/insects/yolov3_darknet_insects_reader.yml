@@ -53,7 +53,7 @@ TrainReader:
     #             [116, 90], [156, 198], [373, 326]]
     #   downsample_ratios: [32, 16, 8]
   #### data ####
-  batch_size: 20
+  batch_size: 10
   shuffle: true
   # drop_last: false
   # drop_empty: true
@@ -116,7 +116,7 @@ EvalReader:
     #             [116, 90], [156, 198], [373, 326]]
     #   downsample_ratios: [32, 16, 8]
   #### data ####
-  batch_size: 100
+  batch_size: 10
 
 TestReader:
 #   inputs_def:
