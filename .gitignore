@@ -75,5 +75,6 @@ dataset/wider_face/WIDER_val
 dataset/wider_face/wider_face_split
 
 dataset/insects
+dataset/fruit
 
 .DS_Store
