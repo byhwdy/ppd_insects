@@ -12,8 +12,8 @@ map_type: 11point
 # pretrain_weights: https://paddle-imagenet-models-name.bj.bcebos.com/DarkNet53_pretrained.tar
 pretrain_weights: 
 # finetune_exclude_pretrained_params: 
-
-# weights: output/yolov3_darknet/model_final
+#### 评价预测用权重
+weights: output/yolov3_darknet_insects/model_final
 
 # 全局类实例化参数
 num_classes: 7
