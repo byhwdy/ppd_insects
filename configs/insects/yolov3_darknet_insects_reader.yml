@@ -90,10 +90,10 @@ EvalReader:
     # - !RandomCrop {}
     # - !RandomFlipImage
     #   is_normalized: false
-    - !NormalizeBox {}
+    # - !NormalizeBox {}
     - !PadBox
       num_max_boxes: 50
-    - !BboxXYXY2XYWH {}
+    # - !BboxXYXY2XYWH {}
   batch_transforms:
     - !RandomShape
       sizes: [320, 352, 384, 416, 448, 480, 512, 544, 576, 608]
@@ -116,7 +116,7 @@ EvalReader:
     #             [116, 90], [156, 198], [373, 326]]
     #   downsample_ratios: [32, 16, 8]
   #### data ####
-  batch_size: 10
+  batch_size: 3
 
 TestReader:
 #   inputs_def:
